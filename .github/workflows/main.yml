@@ -19,4 +19,4 @@ jobs:
         run: docker build -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/ryenjohn/hello-world-ghcr:latest:latest
+        run: docker push ghcr.io/ryenjohn/hello-world-ghcr:latest
