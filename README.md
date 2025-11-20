@@ -141,14 +141,14 @@ docker build -t simple-fastapi .
 docker run -p 8080:8080 simple-fastapi
 curl http://localhost:8080/
 ```
-## Using Docker Compose
+Using Docker Compose
 
 ```
 docker compose up -d
 curl http://<server-ip>:8080/
 ```
 
-# Repo structure
+Repo structure
 
 ├── app/
 │   ├── main.py
