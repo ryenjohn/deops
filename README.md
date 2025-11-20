@@ -41,6 +41,20 @@ EXPOSE 8080
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
-skjfd
+Why this design?
+
+Multi-stage build: dependencies installed in a builder stage and copied to the runtime stage. This keeps the final image smaller and avoids shipping build tools.
+
+python:3.11-slim base: smaller attack surface and image size compared to full images.
+
+Install only what’s needed: pip install --prefix=/install -r requirements.txt isolates installed packages and avoids dev artifacts in the final image.
+
+Explicit EXPOSE 8080 and uvicorn command: app listens on 0.0.0.0:8080 so Kubernetes and Docker can route traffic correctly.
+
+WORKDIR /app: predictable container filesystem layout.
+
+Tip: Keep requirements.txt minimal and freeze versions for reproducible builds.
+
+---
 
 
