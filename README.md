@@ -1,19 +1,12 @@
-# Simple FastAPI App — Containerized & Deployed
 
-A small FastAPI application packaged with Docker, built & pushed via GitHub Actions (GHCR), and deployable to Kubernetes.  
-This README explains the Dockerfile design and reasoning, CI/CD workflow, deployment steps, and testing instructions.
-
----
-
-## Project Overview
+## Overview
 
 This repository contains:
 
 - A small FastAPI application in `app/`
 - An optimized multi-stage `Dockerfile`
 - GitHub Actions workflow to build and push images to GitHub Container Registry (GHCR)
-- Kubernetes manifests (`k8s/`) for Namespace, Deployment and Service
-- `docker-compose.yml` (optional) for local compose-based deployment
+- Deployment services with Docker compose
 
 ---
 
