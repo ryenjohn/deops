@@ -1,43 +1,38 @@
-# Overview
+# Simple FastAPI App — Containerized & Deployed
 
-This project demonstrates how to:
+A small FastAPI application packaged with Docker, built & pushed via GitHub Actions (GHCR), and deployable to Kubernetes.  
+This README explains the Dockerfile design and reasoning, CI/CD workflow, deployment steps, and testing instructions.
 
-Containerize a simple application using Docker
+---
 
-Automate image building and pushing with GitHub Actions
+## Project Overview
 
-Deploy the application using Kubernetes
+This repository contains:
 
-Provide clear documentation for setup, deployment, and testing
+- A small FastAPI application in `app/`
+- An optimized multi-stage `Dockerfile`
+- GitHub Actions workflow to build and push images to GitHub Container Registry (GHCR)
+- Kubernetes manifests (`k8s/`) for Namespace, Deployment and Service
+- `docker-compose.yml` (optional) for local compose-based deployment
 
-# 1. Dockerfile Design & Reasoning
-Dockerfile Summary
+---
 
-Explain:
+## 1. Dockerfile — design & reasoning
 
-Base image choice
-
-Why you used multi-stage build (if used)
-
-How you optimized image size
-
-Ports exposed
-
-CMD vs ENTRYPOINT decisions
-
-Dockerfile
-Stage 1: Build dependencies
+### Dockerfile (example)
+```dockerfile
+# Stage 1: build/install deps
 FROM python:3.11-slim AS builder
-WORKDIR /home/devops/workspace/app
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 
 COPY requirements.txt .
 RUN pip install --prefix=/install -r requirements.txt
 
-Stage 2: Production image
+# Stage 2: runtime image
 FROM python:3.11-slim
-WORKDIR /home/devops/workspace/app
+WORKDIR /app
 
 COPY --from=builder /install /usr/local
 COPY app ./app
@@ -45,3 +40,4 @@ COPY app ./app
 EXPOSE 8080
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+
