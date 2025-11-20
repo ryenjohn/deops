@@ -190,15 +190,15 @@ Using Docker (container)
 ```
 docker build -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
 docker run -p 8080:8080 
-curl http://public-ipadress:8080/
+
 ```
-CLI/WEB "curl http://public-ipadress:8080/"
+CLI/WEB "http://public-ipadress:8080/"
 
 ### 2. Deployment service using Docker Compose
 ```
 docker compose up -d
 ```
-CLI/WEB "curl http://public-ipaddress:8080/"
+CLI/WEB "http://public-ipaddress:8080/"
 
 ### 3. Repo structure
 
