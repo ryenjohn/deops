@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  api:
+    image: ghcr.io/ryenjohn/hello-world-ghcr:latest
+    ports:
+      - "8080:8080"
