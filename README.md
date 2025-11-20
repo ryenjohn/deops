@@ -154,10 +154,11 @@ This authenticates Docker to GitHub Container Registry (GHCR).
 
   - GHCR shows the image under Packages → hello-world-ghcr
 
-### Workflows Action in Github
+### Workflows Action in Github 
 
 <img width="1283" height="852" alt="image" src="https://github.com/user-attachments/assets/cf5e59c4-15a3-4c41-b6de-4ee799a4f6fe" />
 
+It means everytime you update the projects to the Github, it will take take action and diplaying flow processing also a trigger.
 
 ## 3. Deployment steps (Docker compose)
 
