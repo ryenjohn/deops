@@ -53,58 +53,116 @@ Explicit EXPOSE 8080 and uvicorn command: app listens on 0.0.0.0:8080 so Kuberne
 
 WORKDIR /app: predictable container filesystem layout.
 
-Tip: Keep requirements.txt minimal and freeze versions for reproducible builds.
 
 ---
-## 2. CI/CD — GitHub Actions workflow explanation
- Purpose:
+## 2. CI/CD — workflow explanation
 
-- Automatically build Docker image on push to master
+A CI/CD workflow is an automated process that helps development teams build, test, and deliver software faster and more reliably. It stands for Continuous Integration (CI), where code changes are automatically merged and tested, and Continuous Delivery/Deployment (CD), which automates the release of those changes to a production environment. By using a CI/CD pipeline, developers can detect issues earlier, reduce manual work, and release updates more frequently. 
 
-- Push image to GHCR (ghcr.io/<username>/<image>:tag)
-  
-
-Secrets required (Repository → Settings → Secrets)
-
-- GH_PAT — GitHub Personal Access Token with read:packages (and repo if repo is private)
-
-Workflows (.github/workflows/docker-build.yml)
+Workflows Action (.github/workflows/docker-build.yml)
 
 ```yml
-
-name: Build and Push Docker Image
+name: Docker Image CI for GHCR
 
 on:
   push:
-    branches: ["master"]
-  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
-  build:
+  build_and_publish:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Login to GHCR
         run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/simple-fastapi:latest .
+      - name: Build Docker image
+        run: docker build -f Dockerfile -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
 
-      - name: Push image
-        run: docker push ghcr.io/${{ github.repository_owner }}/simple-fastapi:latest
+      - name: Push Docker image
+        run: docker push ghcr.io/ryenjohn/hello-world-ghcr:latest
 
-      - name: Mock deployment
-        run: |
-          echo "Deployment would run here (mock)."
 ```
-### Notes
-- Using ${{ secrets.GH_PAT }} avoids storing credentials in plaintext.
 
-- workflow_dispatch lets you trigger the pipeline manually from the Actions UI.
+1. Workflow Name:
+```
+name: Docker Image CI for GHCR
+```
+This sets a human-readable name for your GitHub Actions workflow.
+It helps you identify the pipeline in the GitHub Actions dashboard.
 
-- You can tag images with commit SHA for traceability (e.g., :${{ github.sha }}).
+2. When the workflow runs
+```
+on:
+  push:
+    branches:
+      - master
+
+```
+This means:
+
+The workflow runs automatically every time you push code to the master branch.
+
+If you commit or push a new change, the CI builds a new Docker image.
+
+
+3. Job Definition
+```
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+```
+- The workflow defines one job named build_and_publish.
+- GitHub will run this job on a virtual machine using Ubuntu Linux.
+
+4. Checkout source code
+```
+- uses: actions/checkout@v4
+```
+This action clones your repository inside the GitHub Actions runner.
+Your Dockerfile and app code become available for building.
+
+5. Login to GHCR
+```
+- name: Login to GHCR
+  run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+```
+This authenticates Docker to GitHub Container Registry (GHCR).
+
+  - ${{ secrets.GH_PAT }} → my personal access token stored securely in GitHub Secrets
+
+  - ${{ github.actor }} → my GitHub username
+
+  - docker login → logs in to the registry so you can push images
+
+6. Build docker image
+```
+- name: Build Docker image
+  run: docker build -f Dockerfile -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
+```
+This command:
+
+  - Reads your Dockerfile (-f Dockerfile)
+
+  - Builds the container image from the current folder (.)
+
+  - Tags it as ghcr.io/ryenjohn/hello-world-ghcr:latest
+
+7. Pust Docker Image
+```
+- name: Push Docker image
+  run: docker push ghcr.io/ryenjohn/hello-world-ghcr:latest
+```
+Once pushed:
+
+  - You can run the image anywhere (Docker, K8s, etc.)
+
+  - Kubernetes can pull this image for deployment
+
+  - GHCR shows the image under Packages → hello-world-ghcr
+
 
 ## 3. Deployment steps
 A: Docker Compose
@@ -119,7 +177,7 @@ services:
       - "8080:8080"
 ```
 
-RUN
+Running command to deploy service
 ```docker compose up -d```
 
 ## 4. Testing instructions
@@ -156,16 +214,12 @@ Repo structure
 ├── requirements.txt
 ├── Dockerfile
 ├── docker-compose.yml
-├── k8s/
-│   ├── namespace.yaml
-│   ├── deployment.yaml
-│   └── service.yaml
 ├── .github/
 │   └── workflows/
 │       └── docker-build.yml
 └── README.md
 
-
+---
 
 
 
