@@ -56,5 +56,118 @@ WORKDIR /app: predictable container filesystem layout.
 Tip: Keep requirements.txt minimal and freeze versions for reproducible builds.
 
 ---
+## 2. CI/CD — GitHub Actions workflow explanation
+### Purpose:
+
+- Automatically build Docker image on push to master
+
+- Push image to GHCR (ghcr.io/<username>/<image>:tag)
+  
+
+### Secrets required (Repository → Settings → Secrets)
+
+- GH_PAT — GitHub Personal Access Token with read:packages (and repo if repo is private)
+
+### Workflows (.github/workflows/docker-build.yml)
+
+```yml
+
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build image
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/simple-fastapi:latest .
+
+      - name: Push image
+        run: docker push ghcr.io/${{ github.repository_owner }}/simple-fastapi:latest
+
+      - name: Mock deployment
+        run: |
+          echo "Deployment would run here (mock)."
+```
+### Notes
+- Using ${{ secrets.GH_PAT }} avoids storing credentials in plaintext.
+
+- workflow_dispatch lets you trigger the pipeline manually from the Actions UI.
+
+- You can tag images with commit SHA for traceability (e.g., :${{ github.sha }}).
+
+## 3. Deployment steps
+### A: Docker Compose
+
+```yml
+
+version: "3.9"
+services:
+  api:
+    image: ghcr.io/<your-username>/simple-fastapi:latest
+    ports:
+      - "8080:8080"
+```
+
+### RUN
+```docker compose up -d```
+
+## 4. Testing instructions
+
+### 1. Create & activate venv:
+## Local (without Docker)
+```
+python -m venv venv
+source venv/bin/activate    # Linux/macOS
+venv\Scripts\activate       # Windows
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8080
+```
+### 2. http://127.0.0.1:8080/
+
+## Using Docker (local container)
+```
+docker build -t simple-fastapi .
+docker run -p 8080:8080 simple-fastapi
+curl http://localhost:8080/
+```
+## Using Docker Compose
+
+```
+docker compose up -d
+curl http://<server-ip>:8080/
+```
+
+# Repo structure
+
+├── app/
+│   ├── main.py
+│   └── __init__.py
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── k8s/
+│   ├── namespace.yaml
+│   ├── deployment.yaml
+│   └── service.yaml
+├── .github/
+│   └── workflows/
+│       └── docker-build.yml
+└── README.md
+
+
+
+
+
 
 
