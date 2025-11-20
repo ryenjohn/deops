@@ -1,6 +1,6 @@
 1. Overview
 
-This project demonstrates a complete CI/CD workflow for containerizing and deploying a simple API application.
+'This project demonstrates a complete CI/CD workflow for containerizing and deploying a simple API application.
 It includes:
 
 A lightweight FastAPI application
@@ -9,7 +9,7 @@ Optimized Dockerfile using multi-stage builds
 
 GitHub Actions workflow for CI/CD that builds and pushes an image to GitHub Container Registry (GHCR)
 
-Kubernetes manifests for deployment (Namespace, Deployment, Service)
+Kubernetes manifests for deployment (Namespace, Deployment, Service)'
 
 ---
 
