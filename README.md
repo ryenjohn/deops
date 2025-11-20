@@ -155,50 +155,54 @@ This authenticates Docker to GitHub Container Registry (GHCR).
   - GHCR shows the image under Packages → hello-world-ghcr
 
 
-## 3. Deployment steps
-A: Docker Compose
+## 3. Deployment steps (Docker compose)
+
+### 1. Create a YML file which name "docker-compose.yml"
 
 ```yml
-
-version: "3.9"
 services:
   api:
-    image: ghcr.io/<your-username>/simple-fastapi:latest
+    image: ghcr.io/ryenjohn/hello-world-ghcr:latest
     ports:
       - "8080:8080"
 ```
+### 2. Authenticate to GHCR
+```
+docker login ghcr.io -u ryenjohn -p GH_PAT
+```
+'GH_PAT' is Github personal Token
 
+### 3. Start the Application
 Running command to deploy service
 ```docker compose up -d```
+Note: Running this command where your docker-compose.yml placed.
+
+### 4. Verify Running Containers
+```
+docker ps
+```
 
 ## 4. Testing instructions
 
-1. Create & activate venv:
-Local (without Docker)
-```
-python -m venv venv
-source venv/bin/activate    # Linux/macOS
-venv\Scripts\activate       # Windows
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8080
-```
-2. http://127.0.0.1:8080/
+### 1. Simple API Access
 
-Using Docker (local container)
+Using Docker (container)
 ```
-docker build -t simple-fastapi .
-docker run -p 8080:8080 simple-fastapi
-curl http://localhost:8080/
+docker build -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
+docker run -p 8080:8080 
+curl http://public-ipadress:8080/
 ```
-Using Docker Compose
+CLI/WEB "curl http://public-ipadress:8080/"
 
+### 2. Deployment service using Docker Compose
 ```
 docker compose up -d
-curl http://<server-ip>:8080/
 ```
+CLI/WEB "curl http://public-ipaddress:8080/"
 
-Repo structure
+### 3. Repo structure
 
+workspace
 ├── app/
 │   ├── main.py
 │   └── __init__.py
