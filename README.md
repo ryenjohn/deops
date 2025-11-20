@@ -1,3 +1,5 @@
+# NOTE
+This my academy account, so the Github username is not meet with real username!
 
 ## Overview
 
@@ -189,7 +191,7 @@ docker ps
 
 ## 4. Testing instructions
 
-### 1. Simple API Access
+### Simple API Access
 
 Using Docker (container)
 ```
@@ -199,13 +201,13 @@ docker run -p 8080:8080
 ```
 CLI/WEB `http://public-ipadress:8080/`
 
-### 2. Deployment service using Docker Compose
+### Deployment service using Docker Compose
 ```
 docker compose up -d
 ```
 CLI/WEB `http://public-ipaddress:8080/`
 
-### 3. Repo structure
+### Repo structure
 
 workspace
 ├── app/
