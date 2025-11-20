@@ -36,21 +36,15 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 ### Why this design?
 
-Multi-stage build: dependencies installed in a builder stage and copied to the runtime stage. This keeps the final image smaller and avoids shipping build tools.
-
-python:3.11-slim base: smaller attack surface and image size compared to full images.
-
-Install only what’s needed: pip install --prefix=/install -r requirements.txt isolates installed packages and avoids dev artifacts in the final image.
-
-Explicit EXPOSE 8080 and uvicorn command: app listens on 0.0.0.0:8080 so Kubernetes and Docker can route traffic correctly.
-
-WORKDIR /app: predictable container filesystem layout.
-
-
+  Multi-stage build: dependencies installed in a builder stage and copied to the runtime stage. This keeps the final image smaller and avoids shipping build tools.
+  python:3.11-slim base: smaller attack surface and image size compared to full images.
+  Install only what’s needed: pip install --prefix=/install -r requirements.txt isolates installed packages and avoids dev artifacts in the final image.
+  Explicit EXPOSE 8080 and uvicorn command: app listens on 0.0.0.0:8080 so Kubernetes and Docker can route traffic correctly.
+  WORKDIR /app: predictable container filesystem layout.
 ---
 ## 2. CI/CD — workflow explanation
 
-A CI/CD workflow is an automated process that helps development teams build, test, and deliver software faster and more reliably. It stands for Continuous Integration (CI), where code changes are automatically merged and tested, and Continuous Delivery/Deployment (CD), which automates the release of those changes to a production environment. By using a CI/CD pipeline, developers can detect issues earlier, reduce manual work, and release updates more frequently. 
+  A CI/CD workflow is an automated process that helps development teams build, test, and deliver software faster and more reliably. It stands for Continuous Integration (CI), where code changes are automatically     merged and tested, and Continuous Delivery/Deployment (CD), which automates the release of those changes to a production environment. By using a CI/CD pipeline, developers can detect issues earlier, reduce manual work, and release updates more frequently. 
 
 Workflows Action (.github/workflows/docker-build.yml)
 
@@ -79,14 +73,14 @@ jobs:
 
 ```
 
-1. Workflow Name:
+### 1. Workflow Name:
 ```
 name: Docker Image CI for GHCR
 ```
 This sets a human-readable name for your GitHub Actions workflow.
 It helps you identify the pipeline in the GitHub Actions dashboard.
 
-2. When the workflow runs
+### 2. When the workflow runs
 ```
 on:
   push:
@@ -96,12 +90,12 @@ on:
 ```
 This means:
 
-The workflow runs automatically every time you push code to the master branch.
+  The workflow runs automatically every time you push code to the master branch.
 
-If you commit or push a new change, the CI builds a new Docker image.
+  If you commit or push a new change, the CI builds a new Docker image.
 
 
-3. Job Definition
+### 3. Job Definition
 ```
 jobs:
   build_and_publish:
@@ -110,14 +104,14 @@ jobs:
 - The workflow defines one job named build_and_publish.
 - GitHub will run this job on a virtual machine using Ubuntu Linux.
 
-4. Checkout source code
+### 4. Checkout source code
 ```
 - uses: actions/checkout@v4
 ```
-This action clones your repository inside the GitHub Actions runner.
-Your Dockerfile and app code become available for building.
+  This action clones your repository inside the GitHub Actions runner.
+  Your Dockerfile and app code become available for building.
 
-5. Login to GHCR
+### 5. Login to GHCR
 ```
 - name: Login to GHCR
   run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -130,12 +124,12 @@ This authenticates Docker to GitHub Container Registry (GHCR).
 
   - docker login → logs in to the registry so you can push images
 
-6. Build docker image
+### 6. Build docker image
 ```
 - name: Build Docker image
   run: docker build -f Dockerfile -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
 ```
-This command:
+  This command:
 
   - Reads your Dockerfile (-f Dockerfile)
 
@@ -143,12 +137,12 @@ This command:
 
   - Tags it as ghcr.io/ryenjohn/hello-world-ghcr:latest
 
-7. Pust Docker Image
+### 7. Pust Docker Image
 ```
 - name: Push Docker image
   run: docker push ghcr.io/ryenjohn/hello-world-ghcr:latest
 ```
-Once pushed:
+  Once pushed:
 
   - You can run the image anywhere (Docker, K8s, etc.)
 
