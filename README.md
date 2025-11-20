@@ -24,7 +24,7 @@ How you optimized image size
 Ports exposed
 
 CMD vs ENTRYPOINT decisions
-
+---
 "Dockerfile"
 Stage 1: Build dependencies
 FROM python:3.11-slim AS builder
