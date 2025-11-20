@@ -64,11 +64,11 @@ Tip: Keep requirements.txt minimal and freeze versions for reproducible builds.
 - Push image to GHCR (ghcr.io/<username>/<image>:tag)
   
 
-### Secrets required (Repository → Settings → Secrets)
+Secrets required (Repository → Settings → Secrets)
 
 - GH_PAT — GitHub Personal Access Token with read:packages (and repo if repo is private)
 
-### Workflows (.github/workflows/docker-build.yml)
+Workflows (.github/workflows/docker-build.yml)
 
 ```yml
 
@@ -107,7 +107,7 @@ jobs:
 - You can tag images with commit SHA for traceability (e.g., :${{ github.sha }}).
 
 ## 3. Deployment steps
-### A: Docker Compose
+A: Docker Compose
 
 ```yml
 
@@ -119,13 +119,13 @@ services:
       - "8080:8080"
 ```
 
-### RUN
+RUN
 ```docker compose up -d```
 
 ## 4. Testing instructions
 
-### 1. Create & activate venv:
-## Local (without Docker)
+1. Create & activate venv:
+Local (without Docker)
 ```
 python -m venv venv
 source venv/bin/activate    # Linux/macOS
@@ -133,9 +133,9 @@ venv\Scripts\activate       # Windows
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8080
 ```
-### 2. http://127.0.0.1:8080/
+2. http://127.0.0.1:8080/
 
-## Using Docker (local container)
+Using Docker (local container)
 ```
 docker build -t simple-fastapi .
 docker run -p 8080:8080 simple-fastapi
