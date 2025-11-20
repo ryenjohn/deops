@@ -57,7 +57,7 @@ Tip: Keep requirements.txt minimal and freeze versions for reproducible builds.
 
 ---
 ## 2. CI/CD — GitHub Actions workflow explanation
-### Purpose:
+ Purpose:
 
 - Automatically build Docker image on push to master
 
