@@ -6,7 +6,7 @@ This repository contains:
 - A small FastAPI application in `app/`
 - An optimized multi-stage `Dockerfile`
 - GitHub Actions workflow to build and push images to GitHub Container Registry (GHCR)
-- Deployment services with Docker compose
+- Deployment services with Docker compose `docker-compose`
 
 ---
 
@@ -197,13 +197,13 @@ docker build -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
 docker run -p 8080:8080 
 
 ```
-CLI/WEB "http://public-ipadress:8080/"
+CLI/WEB `http://public-ipadress:8080/`
 
 ### 2. Deployment service using Docker Compose
 ```
 docker compose up -d
 ```
-CLI/WEB "http://public-ipaddress:8080/"
+CLI/WEB `http://public-ipaddress:8080/`
 
 ### 3. Repo structure
 
