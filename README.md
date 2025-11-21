@@ -8,7 +8,7 @@ This repository contains:
 - A small FastAPI application in `app/`
 - An optimized multi-stage `Dockerfile`
 - GitHub Actions workflow to build and push images to GitHub Container Registry (GHCR)
-- Deployment services with Docker compose `docker-compose`
+- Deployment services with Docker compose `docker-compose.yml`
 
 ---
 
@@ -38,7 +38,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 ### Design Choices & Reasoning
 
-1. Builder Stage
+Stage 1. Builder Stage
 ```
 FROM python:3.11-slim AS builder
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential
@@ -262,7 +262,6 @@ CLI/WEB `http://public-ipaddress:8080/`
 
 ### Repo structure
 
-workspace
 ├── app/
 │   ├── main.py
 │   └── __init__.py
