@@ -277,13 +277,13 @@ docker build -t ghcr.io/ryenjohn/hello-world-ghcr:latest .
 docker run -p 8080:8080 
 
 ```
-CLI/WEB `http://public-ipadress:8080/`
+CLI/WEB `http://ipadress:8080/`
 
 ### Deployment service using Docker Compose
 ```
 docker compose up -d
 ```
-CLI/WEB `http://public-ipaddress:8080/`
+CLI/WEB `http://ipaddress:8080/`
 
 ### Repo structure
 
