@@ -1,5 +1,5 @@
 # NOTE
-This my academy account, so Github username is not meet with my real username!
+This my learning account, so Github username is not meet with my real username!
 
 ## Overview
 
