@@ -1,5 +1,5 @@
 # NOTE
-This my academy account, so the Github username is not meet with real username!
+This my academy account, so Github username is not meet with my real username!
 
 ## Overview
 
@@ -77,17 +77,17 @@ COPY app ./app
   - Keeps image size minimal
 
 Expose 8080
-`
+```
 EXPOSE 8080
-`
+```
   - Documents the port used by Uvicorn
 
   - Helps when running with Docker Compose or Kubernetes
 
 Uvicorn Startup Command
-`
+```
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
-`
+```
   - Uvicorn is the recommended server for FastAPI
 
   - Binds to 0.0.0.0 → accessible inside Docker, Compose, or Kubernetes
