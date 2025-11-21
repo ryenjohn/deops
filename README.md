@@ -126,6 +126,12 @@ jobs:
       - name: Push Docker image
         run: docker push ghcr.io/ryenjohn/hello-world-ghcr:latest
 
+      - name: Mock Deployment Step (Docker Compose)
+        run: |
+          echo "deployment..."
+          echo "docker pull ghcr.io/ryenjohn/ubuntu-v1:latest"
+          echo "docker compose up -d"
+          echo "Deployment completed (mock)."
 ```
 
 ### 1. Workflow Name:
@@ -218,7 +224,7 @@ echo "docker compose up -d"
 
   - Pull updated image
 
-  -Start containers using Docker Compose
+  - Start containers using Docker Compose
 
   - Run the updated service
 
