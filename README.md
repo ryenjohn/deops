@@ -205,6 +205,23 @@ This authenticates Docker to GitHub Container Registry (GHCR).
 
   - GHCR shows the image under Packages → hello-world-ghcr
 
+### 8. Mock Deployment
+```
+echo "deployment..."
+echo "docker pull ghcr.io/ryenjohn/ubuntu-v1:latest"
+echo "docker compose up -d"
+```
+  This is a mock deployment step, used to simulate real CD.
+
+  The step only prints commands instead of executing them.
+  It demonstrates what a real deployment stage would do:
+
+  - Pull updated image
+
+  -Start containers using Docker Compose
+
+  - Run the updated service
+
 ### Workflows Action in Github 
 image registry
 <img width="910" height="356" alt="image" src="https://github.com/user-attachments/assets/1a7e700d-d151-425d-88ee-6619deb2124a" />
