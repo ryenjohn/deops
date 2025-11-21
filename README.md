@@ -12,7 +12,7 @@ This repository contains:
 
 ---
 
-## 1. Dockerfile — design & reasoning
+## I. Dockerfile — design & reasoning
 
 ### Dockerfile 
 ```dockerfile
@@ -97,7 +97,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 
 
 ---
-## 2. CI/CD — workflow explanation
+## II. CI/CD — workflow explanation
 
   A CI/CD workflow is an automated process that helps development teams build, test, and deliver software faster and more reliably. It stands for Continuous Integration (CI), where code changes are automatically     merged and tested, and Continuous Delivery/Deployment (CD), which automates the release of those changes to a production environment. By using a CI/CD pipeline, developers can detect issues earlier, reduce manual work, and release updates more frequently. 
 
@@ -240,7 +240,7 @@ It means everytime you update the projects to the Github, it will take take acti
 
 
 ---
-## 3. Deployment steps (Docker compose)
+## III. Deployment steps (Docker compose)
 
 ### 1. Create a YML file which name "docker-compose.yml"
 
@@ -267,7 +267,7 @@ Note: Running this command where your docker-compose.yml placed.
 docker ps
 ```
 
-## 4. Testing instructions
+## IV. Testing instructions
 
 ### Simple API Access
 
