@@ -36,17 +36,66 @@ EXPOSE 8080
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
-### Why this design?
+### Design Choices & Reasoning
 
-  Multi-stage build: dependencies installed in a builder stage and copied to the runtime stage. This keeps the final image smaller and avoids shipping build tools.
+1. Builder Stage
+```
+FROM python:3.11-slim AS builder
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential
+```
+  - This stage contains tools required for building Python dependencies (e.g., compiling wheels)
+
+  - Keeping these tools out of the final image makes it much smaller and more secure
+
+Stage 1: Dependency Installation
+```
+COPY requirements.txt .
+RUN pip install --prefix=/install -r requirements.txt
+```
+  - Install dependencies into a temporary directory (/install)
+
+  - Allows copying only the installed packages to the final image
+
+  - Avoids pip cache → reduces size
+
+Stage 2: Runtime Image
+```
+FROM python:3.11-slim
+WORKDIR /app
+```
+  - Uses a fresh, clean Python 3.11 slim image
+
+  - This stage does not include build tools → more secure & lightweight
   
-  python:3.11-slim base: smaller attack surface and image size compared to full images.
-  
-  Install only what’s needed: pip install --prefix=/install -r requirements.txt isolates installed packages and avoids dev artifacts in the final image.
-  
-  Explicit EXPOSE 8080 and uvicorn command: app listens on 0.0.0.0:8080 so Kubernetes and Docker can route traffic correctly.
-  
-  WORKDIR /app: predictable container filesystem layout.
+Copy Only What Is Needed
+```
+COPY --from=builder /install /usr/local
+COPY app ./app
+```
+  - Only runtime dependencies and source code are added to the final image
+
+  - Keeps image size minimal
+
+Expose 8080
+`
+EXPOSE 8080
+`
+  - Documents the port used by Uvicorn
+
+  - Helps when running with Docker Compose or Kubernetes
+
+Uvicorn Startup Command
+`
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+`
+  - Uvicorn is the recommended server for FastAPI
+
+  - Binds to 0.0.0.0 → accessible inside Docker, Compose, or Kubernetes
+
+  - Runs the API automatically when the container starts
+
+
+
 ---
 ## 2. CI/CD — workflow explanation
 
