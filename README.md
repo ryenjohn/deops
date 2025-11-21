@@ -215,6 +215,8 @@ workflows action ìmage`
 
 It means everytime you update the projects to the Github, it will take take action and diplaying flow processing also a trigger.
 
+
+---
 ## 3. Deployment steps (Docker compose)
 
 ### 1. Create a YML file which name "docker-compose.yml"
